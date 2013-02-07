@@ -1,8 +1,8 @@
-/*
+/**
  * Skiplist capable of storing INTS from MIN int to MAX int
- * Insert: log(n)
- * Find: log(n)
- * Delete: log(n)
+ * Insert: O(log(n))
+ * Find: O(log(n))
+ * Delete: O(log(n))
  */
 
 import java.util.Random;
