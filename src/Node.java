@@ -1,40 +1,11 @@
 
 public class Node {
-	private Node left;
-	private Node right;
-	private Node parent;
-	private int value;
-	
-	//used to figure out where to insert in heaps
-	private int numOfDesc; 
-	
-	public int getNumOfDesc(){
-		return this.numOfDesc;
-	}
-	
-	public void setNumOfDesc(int numberOfDesc){
-		this.numOfDesc = numberOfDesc;
-	}
-	
-	
+	protected Node left;
+	protected Node right;
+	protected int value;
+
 	Node(int value) {
 		this.value = value;
-	}
-	
-	public void setParent(Node parent) {
-		this.parent = parent;
-		//everytime we add a node make sure every node 
-		//above it in its path updates the num of children
-		this.numOfDesc = 0;
-		Node cur = this;
-		while (cur.getParent() != null){
-			cur = cur.getParent();
-			cur.setNumOfDesc(cur.getNumOfDesc()+1);
-		}
-	}
-
-	public Node getParent() {
-		return this.parent;
 	}
 	
 	public void setNext(Node next) {
