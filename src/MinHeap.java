@@ -1,5 +1,5 @@
 /**
- * PriorityQueue capable of storing INTS from MIN int to MAX int
+ * MinHeap capable of storing INTS from MIN int to MAX int
  * Insert: O(log(n))
  * GetMin: O(1)
  * Delete: O(log(n))
@@ -12,67 +12,42 @@
  */
 
 public class MinHeap {
-   private Node head;
-   static private int printCounter = 0;
-   
-	MinHeap() {
-		
-	}
-
+   private MinHeapNode head;
 	
 	/**
-	 * Prints the PriorityQueue
+	 * Prints the MinHeap
 	 * @param  
 	 * @return       
 	 */
-	void print2(){
-		Node cur = head;
-		Node left = cur.getLeft();
-		Node right = cur.getRight();
-		System.out.print(cur.getValue());
-		int maxLevel = 1;
-		for (int i =0; i<maxLevel; i++){
-		  int level = 0;
-		  System.out.print("\n");
-		  while(level < i && (left != null || right != null)) {
-		    if (left.getNumOfDesc() > right.getNumOfDesc()) {
-		  	    cur = cur.getRight();
-		    }
-		    else {
-			    cur = cur.getLeft();
-		    }
-		    System.out.print(cur.getValue() + " ");
-		    left = cur.getLeft();
-		    right = cur.getRight();
-		    level++;
-		  }		
-		}
-	}
-	
-	void print(){
-	  p(this.head, 0);	
+	public void print(){
+	  printRecursion(this.head, 0);	
 	  System.out.print("\n");
 	}
-	
-	void p(Node cur, int level){
-		System.out.print(cur.getValue() + "(" + level + ") ");
+	private void printRecursion(MinHeapNode cur, int level){
+		System.out.print(cur.getValue() + "(");
+		MinHeapNode tmp = cur;
+		while (tmp.getParent()!=null){
+			tmp = tmp.getParent();
+			System.out.print(tmp.getValue() + " ");
+		}
+		System.out.print(") ");
 		if (cur.getLeft() != null){
-		  p(cur.getLeft(), level+1);
+		  printRecursion(cur.getLeft(), level+1);
 		}
 		if (cur.getRight() != null){
-		  p(cur.getRight(), level+1);
+		  printRecursion(cur.getRight(), level+1);
 		}
 	}
 	
 	/**
-	 * Inserts a new value into the PriorityQueue
+	 * Inserts a new value into the MinHeap
 	 * Returns true if the insert is successful
 	 * @param  value  the value to insert
 	 * @return      boolean indicating whether or not the insert was successful 
 	 */
 	boolean push(int value){
 		boolean success = false;
-		Node newNode = new Node(value);
+		MinHeapNode newNode = new MinHeapNode(value);
 		
 		if (this.head == null) {
 			this.head = newNode;
@@ -80,9 +55,9 @@ public class MinHeap {
 			success = true;
 		}
 		else {
-			Node cur = head;
-			Node left = cur.getLeft();
-			Node right = cur.getRight();
+			MinHeapNode cur = head;
+			MinHeapNode left = cur.getLeft();
+			MinHeapNode right = cur.getRight();
 			while(left != null && right != null ) {
 			  if (left.getNumOfDesc() > right.getNumOfDesc()) {
 				  cur = cur.getRight();
@@ -105,6 +80,7 @@ public class MinHeap {
 				int tmp = newNode.getValue();
 				newNode.setValue(newNode.getParent().getValue());
 				newNode.getParent().setValue(tmp);
+				newNode = newNode.getParent();
 			}
 			
 			success = true;
@@ -112,6 +88,12 @@ public class MinHeap {
 		return success;
 	}
 	
-
-
+	/**
+	 * Returns the min MinHeap
+	 * @param  
+	 * @return		int representing the minimum value       
+	 */
+	public int top(){
+		return this.head.getValue();
+	}
 }
