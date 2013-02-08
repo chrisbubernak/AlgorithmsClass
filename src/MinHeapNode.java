@@ -5,34 +5,51 @@ public class MinHeapNode extends Node{
   //used to store the minimum number of descendents over all paths 
   //from a node to all leafs beneath it
   //used to figure out where to insert in heap
-  private int numOfDesc; 
+  private int minNumOfDesc; 
+ 
+  //used to store the minimum number of descendents over all paths 
+  //from a node to all leafs beneath it
+  //used to figure out where to delete in heap
+  private int maxNumOfDesc; 
+  
 	
   MinHeapNode(int value){
 	  super(value);
   }
-	public int getNumOfDesc(){
-		return this.numOfDesc;
-	}
-	
-	public void setNumOfDesc(int numberOfDesc){
-		this.numOfDesc = numberOfDesc;
+	public int getMinNumOfDesc(){
+		return this.minNumOfDesc;
 	}
 
+	void setMinNumOfDesc(int numberOfDesc){
+		this.minNumOfDesc = numberOfDesc;
+	}
+
+	public int getMaxNumOfDesc(){
+		return this.maxNumOfDesc;
+	}
+
+	void setMaxNumOfDesc(int numberOfDesc){
+		this.maxNumOfDesc = numberOfDesc;
+	}
+
+	
 	public void setParent(MinHeapNode parent) {
 		this.parent = parent;
-		//everytime we add a node make sure every node 
-		//above it in its path updates the num of children
-		this.numOfDesc = 0;
+
+		this.setMaxNumOfDesc(0);
+		this.setMinNumOfDesc(0);
 		MinHeapNode cur = this;
 		while (cur.getParent() != null){
 			//MinHeapNode parent = cur.getParent();
 			//parent.setNumOfDesc(Math.min(a, b));
 			cur = cur.getParent();
 			if (cur.getRight() == null) {
-				cur.setNumOfDesc(0);
+				cur.setMaxNumOfDesc(cur.getLeft().getMaxNumOfDesc()+1);
+				cur.setMinNumOfDesc(0);
 			}
 			else {
-				cur.setNumOfDesc(Math.min(cur.getLeft().getNumOfDesc()+1, cur.getLeft().getNumOfDesc()+1 ));
+				cur.setMinNumOfDesc(Math.min(cur.getLeft().getMinNumOfDesc()+1, cur.getLeft().getMinNumOfDesc()+1 ));
+				cur.setMinNumOfDesc(Math.max(cur.getLeft().getMinNumOfDesc()+1, cur.getLeft().getMinNumOfDesc()+1 ));
 			}
 		}
 	}
