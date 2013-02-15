@@ -16,7 +16,7 @@ public class PriorityQueue <T>{
    private int size = 0;
    
 	/**
-	 * Prints the MinHeap
+	 * Prints the PriorityQueue
 	 * @param  
 	 * @return       
 	 */
@@ -145,7 +145,7 @@ public class PriorityQueue <T>{
 		}
 	}
 	/**
-	 * Returns the min value and removes it from heap
+	 * Returns the min value and removes it from queue
 	 * @param  
 	 * @return		int representing the minimum value       
 	 */
@@ -219,7 +219,7 @@ public class PriorityQueue <T>{
 	}
 	
 	/**
-	 * Returns the min MinHeap
+	 * Returns the min value from the priority queue
 	 * @param  
 	 * @return		int representing the minimum value       
 	 */
