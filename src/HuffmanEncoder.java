@@ -2,9 +2,11 @@
 public class HuffmanEncoder {
 
 	/**
-	 * @param args
+	 * Encodes a string using a HuffmanEncoder
+	 * @param  input	the string to encode (with symbols separated by spaces)
+	 * @return      HOutput object containing the encoded string and the Huffman Tree 
 	 */
-	static public HNode encode(String input) {
+	static public HOutput encode(String input) {
 		//create counts for each char in string
 		PriorityQueue <HNode>pq = new PriorityQueue<HNode>();
 		pq.push(2,new HNode(2,"A"));
@@ -13,8 +15,7 @@ public class HuffmanEncoder {
 		pq.push(2, new HNode(2, "D"));
 		pq.push(4, new HNode(4, "E"));
 		pq.push(1, new HNode(1, "G"));
-		//put symbols/counts in priority queue PQ
-		//while PQ.size > 1
+
 		while (pq.size() > 1){
 			HNode hn1 = pq.pop();
 			HNode hn2 = pq.pop();
@@ -25,6 +26,16 @@ public class HuffmanEncoder {
 			hn3.setRight(hn2);
 			pq.push(f, hn3);
 		}
-		return pq.pop();
+		HNode huffmanTree = pq.pop();
+		return new HOutput(huffmanTree, "encodedString");
+	}
+	
+	/**
+	 * Decodes a Huffman encoded string
+	 * @param  huffmanOutput	the HOutput object containing the encoded string and the Huffman Tree
+	 * @return      String representing the decoded string
+	 */
+	static public String decode(HOutput huffmanOutput) {
+		return null;
 	}
 }

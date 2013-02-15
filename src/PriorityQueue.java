@@ -1,12 +1,8 @@
 /**
  * Priority Queue 
- * Insert: O(log(n))
- * GetMin: O(1)
- * Delete: O(log(n))
- * 
  * Push: O(log(n))
  * Top: O(1)
- * Pop: O(1)
+ * Pop: O(log(n))
  * Size: O(1)
  * Empty: O(1)
  */
