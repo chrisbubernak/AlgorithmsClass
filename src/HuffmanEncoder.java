@@ -4,7 +4,7 @@ public class HuffmanEncoder {
 	/**
 	 * @param args
 	 */
-	static public Node encode(String input) {
+	static public HNode encode(String input) {
 		//create counts for each char in string
 		PriorityQueue <HNode>pq = new PriorityQueue<HNode>();
 		pq.push(new PQNode(2,new HNode(2,"A")));
@@ -16,7 +16,6 @@ public class HuffmanEncoder {
 		//put symbols/counts in priority queue PQ
 		//while PQ.size > 1
 		while (pq.size() > 1){
-			pq.print();
 			HNode hn1 = pq.pop();
 			HNode hn2 = pq.pop();
 			int f = hn1.getFrequency()+hn2.getFrequency();
@@ -26,8 +25,6 @@ public class HuffmanEncoder {
 			hn3.setRight(hn2);
 			pq.push(new PQNode(f, hn3));
 		}
-		pq.print();
-		//System.out.println(pq.pop());
-		return null;
+		return pq.pop();
 	}
 }
