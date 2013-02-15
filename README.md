@@ -1,4 +1,4 @@
-DataStructuresAndAlgorithms
+HuffmanEncoder
 ===========================
 
-A Java library of Data Structures and Algorithms (most of which I had to implement for CSCI 5454).
+A Huffman Encoder written in Java for CSCI 5454.
