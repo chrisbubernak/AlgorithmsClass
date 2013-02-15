@@ -9,7 +9,6 @@ public class HNode{
 		return "sym: " + this.symbol + " freq: " + this.frequency;
 	}
 	
-	
 	HNode(int frequency, String symbol){
 		this.frequency = frequency;
 		this.symbol = symbol;

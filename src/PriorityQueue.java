@@ -46,7 +46,8 @@ public class PriorityQueue <T>{
 	 * @param  letter  the letter to store
 	 * @return      boolean indicating whether or not the insert was successful 
 	 */
-	public void push(PQNode <T>newNode){
+	public void push(int newKey, T newValue){
+		PQNode<T> newNode = new PQNode<T>(newKey, newValue);
 		this.size++;
 		newNode.setPosition(this.size);
 		
