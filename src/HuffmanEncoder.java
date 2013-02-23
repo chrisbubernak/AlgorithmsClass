@@ -16,6 +16,7 @@ public class HuffmanEncoder {
 		pq.push(4, new HNode(4, "E"));
 		pq.push(1, new HNode(1, "G"));
 
+		
 		while (pq.size() > 1){
 			HNode hn1 = pq.pop();
 			HNode hn2 = pq.pop();
@@ -56,6 +57,27 @@ public class HuffmanEncoder {
 	 * @return      String representing the decoded string
 	 */
 	static public String decode(HOutput huffmanOutput) {
-		return null;
+		String encodedString = huffmanOutput.getEncodedString();
+		HNode huffmanTree = huffmanOutput.getHuffmanTree();
+		String decodedString = "";
+		String [] encodedChars = encodedString.split("");
+		
+		//split produces a first element that is blank
+		//so we can ignore it
+		int i = 1;
+		while( i< encodedChars.length) {
+			HNode cur = huffmanTree;
+			while (cur.getLeft()!= null) {
+				if (encodedChars[i].equals("0")) {
+					cur = cur.getLeft();
+				}
+				else {
+					cur = cur.getRight();
+				}
+				i++;
+			}
+			decodedString += cur.getSymbol();
+		}
+		return decodedString;
 	}
 }
