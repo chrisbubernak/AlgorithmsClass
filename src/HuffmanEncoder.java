@@ -27,7 +27,27 @@ public class HuffmanEncoder {
 			pq.push(f, hn3);
 		}
 		HNode huffmanTree = pq.pop();
-		return new HOutput(huffmanTree, "encodedString");
+		
+		String encodedString = "";
+		String[] inputChars = input.split("");
+
+		//split produces a first element that is blank
+		//so we can ignore it
+		for (int i =1; i< inputChars.length; i++) {
+			HNode cur = huffmanTree;
+			while (!cur.getSymbol().equals(inputChars[i])) {
+				if (cur.getLeft().getSymbol().contains(inputChars[i])) {
+					cur = cur.getLeft();
+					encodedString += "0";
+				}
+				else {
+					cur = cur.getRight();
+					encodedString += "1";
+				}
+			}
+		}
+		
+		return new HOutput(huffmanTree, encodedString);
 	}
 	
 	/**

@@ -7,5 +7,12 @@ public class HOutput {
 		this.huffmanTree = huffmanTree;
 		this.encodedString = encodedString;
 	}
+	
+	public HNode getHuffmanTree(){
+		return this.huffmanTree;
+	}
 
+	public String getEncodedString(){
+		return this.encodedString;
+	}
 }
