@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Priority Queue 
  * Push: O(log(n))
@@ -10,7 +12,7 @@
 public class PriorityQueue <T>{
    private PQNode<T> head;
    private int size = 0;
-   
+   private Random rand = new Random();
 	/**
 	 * Prints the PriorityQueue
 	 * @param  
@@ -86,9 +88,16 @@ public class PriorityQueue <T>{
 	private void bubbleUp(PQNode<T> cur){
 		while (cur.getParent()!= null){
 			PQNode<T> parent = cur.getParent();
-			if (cur.getKey() >= parent.getKey()) {
+			if (cur.getKey() > parent.getKey()) {
 				return;
 			}
+			//if there is a tie flip a coin
+			else if (cur.getKey() == parent.getKey()) {
+				if(rand.nextInt(2) == 1) {
+					return;
+				}
+			}
+			
 			int tmpKey = cur.getKey();
 			T tmpValue = cur.getValue();
 			cur.setValue(parent.getValue());
@@ -105,8 +114,14 @@ public class PriorityQueue <T>{
 			PQNode<T> left = cur.getLeft();
 			PQNode<T> right = cur.getRight();
 			if (right != null){
-				if (cur.getKey() <= right.getKey() && cur.getKey() <= left.getKey()) {
+				if (cur.getKey() < right.getKey() && cur.getKey() < left.getKey()) {
 					return;
+				}
+				//if there is a tie flip a coin
+				else if (cur.getKey() == right.getKey() || cur.getKey() == left.getKey()) {
+					if(rand.nextInt(2) == 1) {
+						return;
+					}
 				}
 				if (left.getKey() < cur.getKey() && left.getKey() < right.getKey()) {
 					int tmpKey = cur.getKey();
@@ -128,8 +143,14 @@ public class PriorityQueue <T>{
 				}
 			}
 			else{
-				if (cur.getKey() <= left.getKey()) {
+				if (cur.getKey() < left.getKey()) {
 					return;
+				}
+				//if there is a tie flip a coin
+				else if (cur.getKey() == left.getKey()) {
+					if(rand.nextInt(2) == 1) {
+						return;
+					}
 				}
 				int tmpKey = cur.getKey();
 				T tmpValue = cur.getValue();
