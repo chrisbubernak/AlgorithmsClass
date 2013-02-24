@@ -1,5 +1,4 @@
-//HuffmanTest class - used to run my experiments
-
+import java.util.Arrays;
 import java.util.Random;
 
 public class HuffmanTest {
@@ -7,42 +6,37 @@ public class HuffmanTest {
 	static Random rand = new Random();
 	
 	public static void main(String[] args) {
-		System.out.println("N = 5: " + test(5,5));
-		System.out.println("N = 10: " + test(10,5));
-		System.out.println("N = 50: " + test(50,5));
-		System.out.println("N = 100: " + test(100,5));
-		System.out.println("N = 500: " + test(500,5));
-		System.out.println("N = 1000: " + test(1000,5));
+		robertFrostTest();
 	}
 	
-	//run a a given number of tests on an alphabet of size n
-	//return the average number of operations
-	public static int test(int n, int trials){
-		int operations = 0;
-		String [] alphabet = new String [n];
-		String symbol = "";
-		for (int i =0; i<n; i++){
-			symbol = symbol + "a";
-			alphabet[i] = symbol;
-		}
-		
-		for (int i = 0; i < trials; i++){
-			String input = "";
-			for (int j = 0; j<alphabet.length; j++) {
-				input = input + alphabet[j] + " ";
-				while (rand.nextInt(2) != 1){
-					input = input + alphabet[j] + " ";
-				}
-			}
-			//System.out.println(input);
-			HOutput ho = HuffmanEncoder.encode(input.trim());
-			operations += HuffmanEncoder.counter;
-			HuffmanEncoder.counter = 0;
-			//System.out.println(ho.getEncodedString());
-			//System.out.println(HuffmanEncoder.decode(ho));
-			
-		}
-		
-		return operations/trials;
+	public static void robertFrostTest() {
+	String input =
+		"the road not taken by robert frost " +
+		"two roads diverged in a yellow wood, " +
+		"and sorry i could not travel both " +
+		"and be one traveler, long i stood " +
+		"and looked down one as far as i could " +
+		"to where it bent in the undergrowth; " +
+		"then took the other, as just as fair, " +
+		"and having perhaps the better claim, " +
+		"because it was grassy and wanted wear; " +
+		"though as for that the passing there " +
+		"had worn them really about the same, " +
+		"and both that morning equally lay " +
+		"in leaves no step had trodden black. " +
+		"oh, i kept the first for another day! " +
+		"yet knowing how way leads on to way, " +
+		"i doubted if i should ever come back. " +
+		"i shall be telling this with a sigh " +
+		"somewhere ages and ages hence: " +
+		"two roads diverged in a wood, and i- " +
+		"i took the one less traveled by, " +
+		"and that has made all the difference.";
+	String [] tmp = input.split("");
+	//first element of this tmp array is just blank so fix it
+	String [] chars = Arrays.copyOfRange(tmp, 1, tmp.length);
+	HOutput ho = HuffmanEncoder.encode(input);
+	System.out.print(HuffmanEncoder.decode(ho));
 	}
+	
 }

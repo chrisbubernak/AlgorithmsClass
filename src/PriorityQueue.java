@@ -21,30 +21,30 @@ public class PriorityQueue <T>{
 	public void print(){
 	  printRecursion(this.head);	
 	  System.out.print("\n");
-	  HuffmanEncoder.counter+=2;
+	  
 	}
 	private void printRecursion(PQNode<T> cur){
 		System.out.print(cur);
 		PQNode<T> tmp = cur.getParent();
 		
-		HuffmanEncoder.counter+=2;
+		
 
 		while (tmp!=null){
 			System.out.print("[" +tmp.getValue() +", " + tmp.getKey()+"]");
 			tmp = tmp.getParent();
-			HuffmanEncoder.counter+=3;
+			
 		}
 		if (cur.getLeft() != null){
 		  printRecursion(cur.getLeft());
-		  HuffmanEncoder.counter++;
+		  
 
 		}
 		if (cur.getRight() != null){
 		  printRecursion(cur.getRight());
-		  HuffmanEncoder.counter++;
+		  
 
 		}
-		HuffmanEncoder.counter+=2;
+		
 
 	}
 
@@ -59,42 +59,42 @@ public class PriorityQueue <T>{
 		PQNode<T> newNode = new PQNode<T>(newKey, newValue);
 		this.size++;
 		newNode.setPosition(this.size);
-		HuffmanEncoder.counter+=3;
+		
 
 		if (this.head == null){
 			this.head = newNode;
-			HuffmanEncoder.counter++;
+			
 
 		}
 		else {
 			int depth = (int) Math.floor(Math.log(this.size)/Math.log(2));
 			int [] path = new int[depth];
 			int tmp = this.size;
-			HuffmanEncoder.counter+=3;
+			
 			for (int i =path.length -1; i>-1; i--){
 				tmp = (int)Math.floor(tmp/2);
 				path[i] = tmp;
-				HuffmanEncoder.counter+=2;
+				
 			}
 
 			PQNode<T> cur = this.head;
-			HuffmanEncoder.counter++;
+			
 			for (int i=1; i<depth; i++){
 				PQNode<T> left = cur.getLeft();
 				PQNode<T> right = cur.getRight();
 				
 				if (left.getPosition() == path[i]){
 					cur = left;
-					HuffmanEncoder.counter++;
+					
 				}
 				else {
 					cur = right;
-					HuffmanEncoder.counter++;
+					
 				}
-				HuffmanEncoder.counter+=3;
+				
 			}
 			newNode.setParent(cur);
-			HuffmanEncoder.counter++;
+			
 
 			if (cur.getLeft()== null){
 				cur.setLeft(newNode);
@@ -104,7 +104,6 @@ public class PriorityQueue <T>{
 				cur.setRight(newNode);
 				cur = cur.getRight();
 			}
-			HuffmanEncoder.counter+=4;
 			bubbleUp(cur);
 		}
 	}
@@ -120,7 +119,7 @@ public class PriorityQueue <T>{
 				if(rand.nextInt(2) == 1) {
 					return;
 				}
-				HuffmanEncoder.counter++;
+				
 			}
 			
 			int tmpKey = cur.getKey();
@@ -130,8 +129,6 @@ public class PriorityQueue <T>{
 			parent.setValue(tmpValue);
 			parent.setKey(tmpKey);
 			cur = parent;
-			HuffmanEncoder.counter+=10;
-
 		}
 		return;
 	}
@@ -140,7 +137,7 @@ public class PriorityQueue <T>{
 		while (cur.getLeft() != null){
 			PQNode<T> left = cur.getLeft();
 			PQNode<T> right = cur.getRight();
-			HuffmanEncoder.counter+=2;
+			
 
 			if (right != null){
 				if (cur.getKey() < right.getKey() && cur.getKey() < left.getKey()) {
@@ -151,10 +148,10 @@ public class PriorityQueue <T>{
 					if(rand.nextInt(2) == 1) {
 						return;
 					}
-					HuffmanEncoder.counter++;
+					
 
 				}
-				HuffmanEncoder.counter+=3;
+				
 
 				if (left.getKey() < cur.getKey() && left.getKey() < right.getKey()) {
 					int tmpKey = cur.getKey();
@@ -164,7 +161,7 @@ public class PriorityQueue <T>{
 					left.setValue(tmpValue);
 					left.setKey(tmpKey);
 					cur = left;
-					HuffmanEncoder.counter+=7;
+					
 				}
 				else {
 					int tmpKey = cur.getKey();
@@ -174,10 +171,10 @@ public class PriorityQueue <T>{
 					right.setValue(tmpValue);
 					right.setKey(tmpKey);
 					cur = right;			
-					HuffmanEncoder.counter+=7;
+					
 
 				}
-				HuffmanEncoder.counter+=2;
+				
 
 			}
 			else{
@@ -189,7 +186,7 @@ public class PriorityQueue <T>{
 					if(rand.nextInt(2) == 1) {
 						return;
 					}
-					HuffmanEncoder.counter++;
+					
 
 				}
 				int tmpKey = cur.getKey();
@@ -200,7 +197,6 @@ public class PriorityQueue <T>{
 				left.setKey(tmpKey);
 				cur = left;
 			}
-			HuffmanEncoder.counter+=9;
 		}
 	}
 	/**
@@ -215,26 +211,26 @@ public class PriorityQueue <T>{
 		PQNode <T>returnNode = new PQNode<T>(this.head);
 		T returnValue = returnNode.getValue();
 		
-		HuffmanEncoder.counter+=3;
-		HuffmanEncoder.counter++;
+		
+		
 
 		if (this.size == 1){
-			HuffmanEncoder.counter++;
+			
 			this.head = null;
 		}
 		else {
 			int depth = (int) Math.floor(Math.log(this.size)/Math.log(2));
 			int [] path = new int[depth];
 			int tmp = this.size;
-			HuffmanEncoder.counter+=3;
+			
 			for (int i =path.length -1; i>-1; i--){
 				tmp = (int)Math.floor(tmp/2);
 				path[i] = tmp;
-				HuffmanEncoder.counter+=2;
+				
 			}
 
 			PQNode <T>cur = this.head;
-			HuffmanEncoder.counter++;
+			
 
 			for (int i=1; i<depth; i++){
 				PQNode <T>left = cur.getLeft();
@@ -245,7 +241,6 @@ public class PriorityQueue <T>{
 				else {
 					cur = right;
 				}
-				HuffmanEncoder.counter+=5;
 
 			}
 			if (cur.getRight()== null){
@@ -258,18 +253,13 @@ public class PriorityQueue <T>{
 				this.head.setValue(cur.getRight().getValue());
 				cur.setRight(null);
 			}
-			HuffmanEncoder.counter+=4;
 
 			bubbleDown(this.head);
 		}
 		this.size--;
-		HuffmanEncoder.counter++;
 
 		return returnValue;
 	}
-	
-	
-
 	
 	/**
 	 * Returns true if the queue is empty and false if it isn't
@@ -277,8 +267,6 @@ public class PriorityQueue <T>{
 	 * @return		true if empty, otherwise false       
 	 */
 	public boolean empty(){
-		HuffmanEncoder.counter++;
-
 		if (this.head == null) {
 			return true;
 		}
@@ -290,8 +278,6 @@ public class PriorityQueue <T>{
 	 * @return      integer indicating the number of elements in the queue
 	 */
 	public int size(){
-		HuffmanEncoder.counter++;
-
 		return this.size;
 	}
 	
@@ -301,8 +287,6 @@ public class PriorityQueue <T>{
 	 * @return		int representing the minimum value       
 	 */
 	public T top(){
-		HuffmanEncoder.counter++;
-
 		return this.head.getValue();
 	}
 }

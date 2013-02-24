@@ -1,5 +1,6 @@
+import java.util.Arrays;
+
 public class HuffmanEncoder {
-	public static int counter = 0;
 
 	/**
 	 * Encodes a string using a HuffmanEncoder
@@ -12,8 +13,10 @@ public class HuffmanEncoder {
 		int [] counts = new int[input.length()];
 		int count = 0;
 		
-		String [] inputSymbols = input.split(" "); 
-			
+		String [] tmp = input.split("");
+		//first element of this tmp array is just blank so fix it
+		String [] inputSymbols = Arrays.copyOfRange(tmp, 1, tmp.length);		
+		
 		for (int i =0; i<inputSymbols.length; i++) {
 			int index = indexOf(inputSymbols[i], symbols);
 			if (index == -1){
@@ -26,36 +29,31 @@ public class HuffmanEncoder {
 				counts[index] = counts[index]+ 1;				
 			}
 		}
-
 		
 		PriorityQueue <HNode>pq = new PriorityQueue<HNode>();
 		
 		for (int i = 0; i<count; i++) {
 			pq.push(counts[i], new HNode(counts[i], symbols[i]));
-			counter++;
 		}
 
 		while (pq.size() > 1){
 			HNode hn1 = pq.pop();
 			HNode hn2 = pq.pop();
 			int f = hn1.getFrequency()+hn2.getFrequency();
-			String s = hn1.getSymbol()+" " +hn2.getSymbol();
+			String s = hn1.getSymbol()+hn2.getSymbol();
 			HNode hn3 = new HNode(f, s);
 			hn3.setLeft(hn1);
 			hn3.setRight(hn2);
 			pq.push(f, hn3);
-			counter = counter + 9;
 		}
 		HNode huffmanTree = pq.pop();
-		counter++;
 
 		String encodedString = "";
 
 		for (int i =0; i< inputSymbols.length; i++) {
 			HNode cur = huffmanTree;
 			while (!cur.getSymbol().equals(inputSymbols[i])) {
-				if (contains(cur.getLeft().getSymbol(), inputSymbols[i])) {
-				//if (cur.getLeft().getSymbol().contains(inputSymbols[i])) {
+				if (cur.getLeft().getSymbol().contains(inputSymbols[i])) {
 					cur = cur.getLeft();
 					encodedString += "0";
 				}
@@ -94,21 +92,11 @@ public class HuffmanEncoder {
 				}
 				i++;
 			}
-			decodedString += cur.getSymbol() + " ";
+			decodedString += cur.getSymbol();
 		}
-		//remove the trailing whitespace
-		return decodedString.trim();
+		return decodedString;
 	}
 	
-	//check if a symbol is contained in a string of whitespace sperated symbols
-	private static boolean contains(String symbolsString, String target){
-		String [] symbols = symbolsString.split(" ");
-
-		if (indexOf(target, symbols) == -1){
-			return false;
-		}
-		return true;
-	}
 	
 	private static int indexOf(String target, String [] array) {
 		int i =0;
