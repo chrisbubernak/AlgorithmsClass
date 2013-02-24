@@ -1,4 +1,3 @@
-
 public class HuffmanEncoder {
 
 	/**
@@ -8,15 +7,33 @@ public class HuffmanEncoder {
 	 */
 	static public HOutput encode(String input) {
 		//create counts for each char in string
-		PriorityQueue <HNode>pq = new PriorityQueue<HNode>();
-		pq.push(2,new HNode(2,"A"));
-		pq.push(3, new HNode(3,"B"));
-		pq.push(1, new HNode(1, "C"));
-		pq.push(2, new HNode(2, "D"));
-		pq.push(4, new HNode(4, "E"));
-		pq.push(1, new HNode(1, "G"));
+		String [] symbols = new String[input.length()];
+		int [] counts = new int[input.length()];
+		int count = 0;
+		
+		String [] inputSymbols = input.split(" "); 
+			
+		for (int i =0; i<inputSymbols.length; i++) {
+			int index = indexOf(inputSymbols[i], symbols);
+			if (index == -1){
+				symbols[count] = inputSymbols[i];
+				counts[count] = 1;
+				count++;
+			}
+			else {
+				symbols[index] = inputSymbols[i];
+				counts[index] = counts[index]+ 1;				
+			}
+		}
 
 		
+		PriorityQueue <HNode>pq = new PriorityQueue<HNode>();
+		
+		for (int i = 0; i<count; i++) {
+			System.out.println(counts[i] + " " + symbols[i]);
+			pq.push(counts[i], new HNode(counts[i], symbols[i]));
+		}
+
 		while (pq.size() > 1){
 			HNode hn1 = pq.pop();
 			HNode hn2 = pq.pop();
@@ -30,14 +47,11 @@ public class HuffmanEncoder {
 		HNode huffmanTree = pq.pop();
 		
 		String encodedString = "";
-		String[] inputChars = input.split("");
 
-		//split produces a first element that is blank
-		//so we can ignore it
-		for (int i =1; i< inputChars.length; i++) {
+		for (int i =0; i< inputSymbols.length; i++) {
 			HNode cur = huffmanTree;
-			while (!cur.getSymbol().equals(inputChars[i])) {
-				if (cur.getLeft().getSymbol().contains(inputChars[i])) {
+			while (!cur.getSymbol().equals(inputSymbols[i])) {
+				if (cur.getLeft().getSymbol().contains(inputSymbols[i])) {
 					cur = cur.getLeft();
 					encodedString += "0";
 				}
@@ -76,8 +90,20 @@ public class HuffmanEncoder {
 				}
 				i++;
 			}
-			decodedString += cur.getSymbol();
+			decodedString += cur.getSymbol() + " ";
 		}
-		return decodedString;
+		//remove the trailing whitespace
+		return decodedString.trim();
+	}
+	
+	private static int indexOf(String target, String [] array) {
+		int i =0;
+		while(array[i] != null){
+			if (array[i].equals(target)) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
 	}
 }
