@@ -1,4 +1,5 @@
 public class HuffmanEncoder {
+	public static int counter = 0;
 
 	/**
 	 * Encodes a string using a HuffmanEncoder
@@ -31,6 +32,7 @@ public class HuffmanEncoder {
 		
 		for (int i = 0; i<count; i++) {
 			pq.push(counts[i], new HNode(counts[i], symbols[i]));
+			counter++;
 		}
 
 		while (pq.size() > 1){
@@ -42,9 +44,11 @@ public class HuffmanEncoder {
 			hn3.setLeft(hn1);
 			hn3.setRight(hn2);
 			pq.push(f, hn3);
+			counter = counter + 9;
 		}
 		HNode huffmanTree = pq.pop();
-		
+		counter++;
+
 		String encodedString = "";
 
 		for (int i =0; i< inputSymbols.length; i++) {

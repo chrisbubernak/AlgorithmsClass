@@ -1,3 +1,5 @@
+//HuffmanTest class - used to run my experiments
+
 import java.util.Random;
 
 public class HuffmanTest {
@@ -5,15 +7,12 @@ public class HuffmanTest {
 	static Random rand = new Random();
 	
 	public static void main(String[] args) {
-		System.out.println("N = 10: " + test(5,1));
-		/*System.out.println("N = 50: " + test(50,10));
-		System.out.println("N = 100: " + test(100,10));
-		System.out.println("N = 500: " + test(500,10));
-		System.out.println("N = 1000: " + test(1000,10));
-		System.out.println("N = 5000: " + test(5000,10));
-		System.out.println("N = 10000: " + test(10000,10));
-		System.out.println("N = 50000: " + test(50000,10));*/
-
+		System.out.println("N = 5: " + test(5,5));
+		System.out.println("N = 10: " + test(10,5));
+		System.out.println("N = 50: " + test(50,5));
+		System.out.println("N = 100: " + test(100,5));
+		System.out.println("N = 500: " + test(500,5));
+		System.out.println("N = 1000: " + test(1000,5));
 	}
 	
 	//run a a given number of tests on an alphabet of size n
@@ -35,11 +34,12 @@ public class HuffmanTest {
 					input = input + alphabet[j] + " ";
 				}
 			}
-			System.out.println(input);
+			//System.out.println(input);
 			HOutput ho = HuffmanEncoder.encode(input.trim());
-			//HOutput ho = HuffmanEncoder.encode("A A B B B C D D E E E E G");
-			System.out.println(ho.getEncodedString());
-			System.out.println(HuffmanEncoder.decode(ho));
+			operations += HuffmanEncoder.counter;
+			HuffmanEncoder.counter = 0;
+			//System.out.println(ho.getEncodedString());
+			//System.out.println(HuffmanEncoder.decode(ho));
 			
 		}
 		
