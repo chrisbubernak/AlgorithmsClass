@@ -30,7 +30,6 @@ public class HuffmanEncoder {
 		PriorityQueue <HNode>pq = new PriorityQueue<HNode>();
 		
 		for (int i = 0; i<count; i++) {
-			System.out.println(counts[i] + " " + symbols[i]);
 			pq.push(counts[i], new HNode(counts[i], symbols[i]));
 		}
 
@@ -38,7 +37,7 @@ public class HuffmanEncoder {
 			HNode hn1 = pq.pop();
 			HNode hn2 = pq.pop();
 			int f = hn1.getFrequency()+hn2.getFrequency();
-			String s = hn1.getSymbol()+hn2.getSymbol();
+			String s = hn1.getSymbol()+" " +hn2.getSymbol();
 			HNode hn3 = new HNode(f, s);
 			hn3.setLeft(hn1);
 			hn3.setRight(hn2);
@@ -51,7 +50,8 @@ public class HuffmanEncoder {
 		for (int i =0; i< inputSymbols.length; i++) {
 			HNode cur = huffmanTree;
 			while (!cur.getSymbol().equals(inputSymbols[i])) {
-				if (cur.getLeft().getSymbol().contains(inputSymbols[i])) {
+				if (contains(cur.getLeft().getSymbol(), inputSymbols[i])) {
+				//if (cur.getLeft().getSymbol().contains(inputSymbols[i])) {
 					cur = cur.getLeft();
 					encodedString += "0";
 				}
@@ -96,9 +96,19 @@ public class HuffmanEncoder {
 		return decodedString.trim();
 	}
 	
+	//check if a symbol is contained in a string of whitespace sperated symbols
+	private static boolean contains(String symbolsString, String target){
+		String [] symbols = symbolsString.split(" ");
+
+		if (indexOf(target, symbols) == -1){
+			return false;
+		}
+		return true;
+	}
+	
 	private static int indexOf(String target, String [] array) {
 		int i =0;
-		while(array[i] != null){
+		while(i < array.length && array[i] != null){
 			if (array[i].equals(target)) {
 				return i;
 			}
