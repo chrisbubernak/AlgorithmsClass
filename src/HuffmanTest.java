@@ -36,6 +36,8 @@ public class HuffmanTest {
 	//first element of this tmp array is just blank so fix it
 	String [] chars = Arrays.copyOfRange(tmp, 1, tmp.length);
 	HOutput ho = HuffmanEncoder.encode(input);
+	System.out.println("Num of Bits to Encode: " + ho.getEncodedString().length());
+	System.out.println("Entropy: " + HuffmanEncoder.entropy(input));
 	System.out.print(HuffmanEncoder.decode(ho));
 	}
 	

@@ -4,7 +4,7 @@ public class HuffmanEncoder {
 
 	/**
 	 * Encodes a string using a HuffmanEncoder
-	 * @param  input	the string to encode (with symbols separated by spaces)
+	 * @param  input	the string to encode 
 	 * @return      HOutput object containing the encoded string and the Huffman Tree 
 	 */
 	static public HOutput encode(String input) {
@@ -97,6 +97,47 @@ public class HuffmanEncoder {
 		return decodedString;
 	}
 	
+
+	/**
+	 * Calculates the entropy of a given input string
+	 * which equals the lower limit on the number of bits
+	 * it takes to encode each symbol in the string
+	 * @param  input	the string to encode 
+	 * @return      The entropy of the string
+	 */
+	public static double entropy(String input) {
+		//create counts for each char in string
+		String [] symbols = new String[input.length()];
+		int [] counts = new int[input.length()];
+		int count = 0;
+		
+		String [] tmp = input.split("");
+		//first element of this tmp array is just blank so fix it
+		String [] inputSymbols = Arrays.copyOfRange(tmp, 1, tmp.length);		
+		
+		for (int i =0; i<inputSymbols.length; i++) {
+			int index = indexOf(inputSymbols[i], symbols);
+			if (index == -1){
+				symbols[count] = inputSymbols[i];
+				counts[count] = 1;
+				count++;
+			}
+			else {
+				symbols[index] = inputSymbols[i];
+				counts[index] = counts[index]+ 1;				
+			}
+		}
+		
+	  double entropy = 0;
+		int length = input.length();
+		for (int i = 0; i < count; i++){
+			double r = (double)counts[i]/length;
+			double e = (r)*Math.log(r)/Math.log(2);
+			entropy-=e;
+		}
+		
+		return entropy;
+	}
 	
 	private static int indexOf(String target, String [] array) {
 		int i =0;
