@@ -4,6 +4,11 @@ public class Graph {
 	private Node [] adjacencyList;
 	private static Random rand = new Random();
 	
+	/**
+	 * Generates a Erdos-Renyi random graph given a size and c value
+	 * @param  size the size of the graph
+	 * @param  c the expected degree of each vertex
+	 */
 	public Graph(int size, int c) {
 		adjacencyList = new Node[size];
 		double p = (double)c/(size-1);
@@ -19,11 +24,15 @@ public class Graph {
 		}
 	}
 	
+	/**
+	 * Returns the size of the graph
+	 * @return      integer indicating the size of the graph 
+	 */
 	public int size(){
 		return adjacencyList.length;
 	}
 	
-	public void addEdge(int a, int b) {
+	private void addEdge(int a, int b) {
 		Node tmp = new Node(a);
 		Node tmp2 = new Node(b);
 		tmp.setNext(adjacencyList[b]);
@@ -32,10 +41,13 @@ public class Graph {
 		adjacencyList[b] = tmp;
 	}
 	
-	public Node neighbors(int vertex){
+	private Node neighbors(int vertex){
 		return adjacencyList[vertex];
 	}
 	
+	/**
+	 * Prints the graph
+	 */
 	public void print(){
 		for (int i = 0; i< this.adjacencyList.length; i++){
 			System.out.print("Vertex: " + i +" edges: ");
@@ -48,6 +60,10 @@ public class Graph {
 		}
 	}
 	
+	/**
+	 * Returns the diameter of a graph
+	 * @return      integer indicating the diamater of the graph
+	 */
 	public int diameter() {
 		int diameter = 0;
 		for (int i =0; i<this.size(); i++){
