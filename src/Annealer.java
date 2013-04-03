@@ -5,6 +5,7 @@ public class Annealer {
 	private double alpha;
 	private double temp0;
 	private State state0;
+	private int update; 
 	
 	public Annealer(State s, double temp, double alpha){
 		this.alpha = alpha;
@@ -15,15 +16,28 @@ public class Annealer {
 	public State run(){
 		State s = state0;
 		double temp = temp0;
-		
-		//run till convergance...right now im just doing 10
-		for (int i =0; i<10; i++){
+		int accept = 0;
+		//run till convergance...
+		while ((accept<s.getN()*s.getN()) && ((s.percentOn()<.8)&&(s.percentOn()>.2))){
 			State s_new = this.neighbors(s);
-			if (accept(score(s), score(s_new), temp)){
+			if (accept(s.getScore(), s_new.getScore(), temp)){
 					s = s_new;
+					accept =0;
+					if (update == 1){
+						s.turnOn();
+					}
+					else{
+						s.turnOff();
+					}
+			}
+			else {
+				accept++;
 			}
 			temp = decreaseTemperature(temp);
 		}
+		System.out.println(accept + "/" + s.getN()*s.getN());
+		System.out.println(s.score());
+		System.out.println(s.percentOn());
 		return s;
 	}
 	
@@ -32,7 +46,7 @@ public class Annealer {
 	//states and a temperature and makes a probabilistic 
 	//decision about whether nor not to accept the proposed
 	//move (i.e, to replace s with s')
-	public boolean accept(double score1, double score2, double temp){
+	public boolean accept(double score1, double score2, double temp){		
 		//Pr(accept|score2 < score1)  = 1
 		//prefer score decreses!
 		if (score2 < score1) {
@@ -41,6 +55,7 @@ public class Annealer {
 		
 		//Pr(accept|score2>score1,t) = e^-(abs(score2-score1)/t)		
 		double p = Math.exp(-Math.abs(score2-score1)/temp);
+
 		if (rand.nextDouble()<=p){
 			return true;
 		}
@@ -53,7 +68,44 @@ public class Annealer {
 	//a function that takes as input some solution s 
 	//and returns a "neighboring" solution4 s'
 	public State neighbors(State s){
-		return new State(0);
+		State newState = new State(s);
+		int n = s.getN();
+		int index = rand.nextInt(n*n);
+		int []lattice = newState.getLattice();
+				
+		
+		int d = (index-n+lattice.length)%lattice.length;		
+		int l = (index-1+n)%n+n*(index/n);
+		int r = (index+1)%n+n*(index/n);
+		int u = (index+n)%lattice.length;
+				
+		int oldScore = -1*(cellScore(lattice, d, n)+cellScore(lattice, l, n)+cellScore(lattice, r, n)+cellScore(lattice, u, n));				
+		lattice[index] = lattice[index]*-1;
+		
+		if(lattice[index]==1){
+			update = 1;
+		}
+		else {
+			update = 0;
+		}
+		
+		int newScore = -1*(cellScore(lattice, d, n)+cellScore(lattice, l, n)+cellScore(lattice, r, n)+cellScore(lattice, u, n));
+	
+		
+		newState.setLattice(lattice);
+		newState.setScore(s.getScore()-(oldScore-newScore));
+		return newState;
+	}
+	
+	//the score at a specific cell
+	private int cellScore(int [] lattice, int index, int n){	
+	
+		int d = lattice[(index-n+lattice.length)%lattice.length];
+		int l = lattice[(index-1+n)%n+n*(index/n)];
+		int r = lattice[(index+1)%n+n*(index/n)];
+		int u = lattice[(index+n)%lattice.length];
+
+		return lattice[index]*(d+u+r+l);
 	}
 	
 	//a function that takes a real valued parameter t and
@@ -62,39 +114,6 @@ public class Annealer {
 	//"cooling" or "annealing" schedule
 	public double decreaseTemperature(double temp){
 		return temp*alpha;
-	}
-	
-	public int score(State s){
-		int score = 0;
-		int n = s.getN();
-		int [] lattice = s.getLattice();
-		
-		for (int i =0; i<n; i++){
-			for (int j =0; j<n; j++){
-				if (i!=j){
-					score = score + lattice[i]*lattice[j]*coupled(i, j, n);
-				}
-			}
-		}
-		return -score;
-	}
-	
-	public int coupled(int i, int j, int n){
-		int x1 = i%n;
-		int y1 = i/n;
-		
-		int x2 = j%n;
-		int y2 = j/n;
-		
-		if (x1 == x2 && (y2 == (y1-1+n)%n || y2 == (y1+1+n)%n)) {
-			return 1;
-		}
-		if (y1 == y2 && (x2 == (x2-1+n)%n || x2 == (x1+1+n)%n)){
-			return 1;
-		}
-		
-		return 0;
-	}
-	
+	}	
 
 }
