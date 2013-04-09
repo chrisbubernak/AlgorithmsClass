@@ -31,7 +31,6 @@ public class Main implements Runnable{
 		f.add(p);
 		f.pack();
 		f.setVisible(true);
-		
 	}
 	
 	/**
@@ -41,7 +40,6 @@ public class Main implements Runnable{
 		Main m = new Main();
 		Annealer a = new Annealer(50, 1000, .9999);
 		sFinal = a.run();
-		
 		SwingUtilities.invokeLater(m);
 		
 	

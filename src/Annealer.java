@@ -10,6 +10,7 @@ public class Annealer {
 	private int [] lattice;
 	private int score;
 	private int on = 0;
+	private int count = 0;
 	
 	public Annealer(int n, double temp, double alpha){
 		this.alpha = alpha;
@@ -26,11 +27,11 @@ public class Annealer {
 		double temp = temp0;
 		int accept = 0;
 		//run till convergance...
-		while ((accept<n*n) && ((percentOn()<.8)&&(percentOn()>.2))){
+		while ((accept<n*n) && percentOn() < .8){
+			count++;
+			//choose a random point to propose a flip on
 			int index = rand.nextInt(n*n);
-			//State s_new = this.neighbors(s);
 			if(accept(index, temp)){
-			//if (accept(s.getScore(), s_new.getScore(), temp)){
 					accept =0;
 					if (update == 1){
 						this.on++;
@@ -40,15 +41,16 @@ public class Annealer {
 					}
 			}
 			else {
-				//flip the bit back
+				//flip the bit back if we reject
 				lattice[index] = lattice[index]*-1;
 				accept++;
 			}
 			temp = decreaseTemperature(temp);
 		}
 		System.out.println(accept + "/" + n*n);
-		System.out.println(score);
-		System.out.println(percentOn());
+		System.out.println("Score: " + score);
+		System.out.println("Temp:" + temp);
+		System.out.println("Percent On: " + percentOn());
 		return this.lattice;
 	}
 	
@@ -63,7 +65,7 @@ public class Annealer {
 		int r = (index+1)%n+n*(index/n);
 		int u = (index+n)%lattice.length;
 				
-		int oldScore = -1*(cellScore(d)+cellScore(l)+cellScore(r)+cellScore(u));				
+		int oldScore = -1*(cellScore(d)+cellScore(l)+cellScore(r)+cellScore(u)+cellScore(index));				
 		lattice[index] = lattice[index]*-1;
 		
 		if(lattice[index]==1){
@@ -73,7 +75,7 @@ public class Annealer {
 			update = 0;
 		}
 		
-		int newScore = -1*(cellScore(d)+cellScore(l)+cellScore(r)+cellScore(u));
+		int newScore = -1*(cellScore(d)+cellScore(l)+cellScore(r)+cellScore(u)+cellScore(index));
 		
 		
 		
@@ -111,7 +113,7 @@ public class Annealer {
 	//returns another real-valued t' < t. the monotonic 
 	//structure of decreaseTemperature() is caled the
 	//"cooling" or "annealing" schedule
-	public double decreaseTemperature(double temp){
+	private double decreaseTemperature(double temp){
 		return temp*alpha;
 	}
 	
@@ -128,9 +130,8 @@ public class Annealer {
 				this.lattice[i] = -1;
 			}
 		}
-		int score = 0;
 		for (int i =0; i<lattice.length; i++){
-			score+=cellScore(i);
+			this.score+=cellScore(i);
 		}
 	}
 }
