@@ -48,6 +48,7 @@ public class AVLTree <T extends Comparable<T>>{
 				Node<T>newNode = new Node<T>(value);
 				newNode.setParent(cur);
 				cur.setLeft(newNode);
+				balance(cur);
 			}
 			else {
 				insertRecurse(value, cur.getLeft());
@@ -58,6 +59,7 @@ public class AVLTree <T extends Comparable<T>>{
 				Node<T>newNode = new Node<T>(value);
 				newNode.setParent(cur);
 				cur.setRight(newNode);
+				balance(cur);
 			}
 			else {
 				insertRecurse(value, cur.getRight());
@@ -114,7 +116,7 @@ public class AVLTree <T extends Comparable<T>>{
 		 * to restore the entire tree to the rules of AVL.
 		 */
 		if(node != null){
-			//do some balancing!
+			System.out.println("Node Value: " + node.getValue() + " factor: "+ node.getBalanceFactor());
 			balance(node.getParent());
 		}
 	}
@@ -125,8 +127,14 @@ public class AVLTree <T extends Comparable<T>>{
 	 * @param value to delete
 	 */
 	public void delete(T value) {
-		
+	//If the node is a leaf or has only one child, remove it. 
+	//Otherwise, replace it with either the largest in its left sub tree (in order predecessor) 
+	//or the smallest in its right sub tree (in order successor), and remove that node. 
+	//The node that was found as a replacement has at most one sub tree. 
+	//After deletion, retrace the path back up the tree (parent of the replacement) to the root, adjusting the balance factors as needed.
 	}
+	
+	
 	
 	/**
 	 * prints the tree out
