@@ -67,46 +67,6 @@ public class AVLTree <T extends Comparable<T>>{
 		}
 	}
 	
-	
-	/*public void insert(T value) {
-		if (this.head == null) {
-			this.head = new Node<T>(value);
-		}
-		else {
-			Node<T> cur = head;
-			Node<T> prev = cur;
-			String child = "left";
-			while (cur != null){
-				prev = cur;
-				int c = value.compareTo(cur.getValue());
-				if (c == 0){
-					//don't want to insert the same value twice
-					return;
-				}
-				else if(c < 0) {
-					cur = cur.getLeft();
-					child = "left";
-				}
-				else {
-					cur = cur.getRight();
-					child = "right";
-				}
-			}
-			Node<T>newNode = new Node<T>(value);
-			newNode.setParent(prev);
-			if (child == "left") {
-				prev.setLeft(newNode);
-			}
-			else {
-				prev.setRight(newNode);
-			}
-			
-			//after inserting we have to go through all of the new node's 
-			//ancestors and make sure the AVL tree property is upheld
-			balance(cur);
-		}
-	}*/
-	
 	public void balance(Node<T> node){
 		/*
 		 * The balance factor is calculated as follows: balanceFactor = height(left-subtree) - height(right-subtree). 
@@ -116,10 +76,105 @@ public class AVLTree <T extends Comparable<T>>{
 		 * to restore the entire tree to the rules of AVL.
 		 */
 		if(node != null){
-			System.out.println("Node Value: " + node.getValue() + " factor: "+ node.getBalanceFactor());
+			int balance = node.getBalanceFactor();
+			if(balance == -2) {
+				System.out.println("fda");
+
+				//if the balance factor of P is -2 then the right subtree outweighs the left subtree of the given node, 
+				//and the balance factor of the right child (R) must be checked. 
+				//The left rotation with P as the root is necessary.
+				int rightChildBalance = node.getRight().getBalanceFactor();
+				if (rightChildBalance == -1) {
+					//If the balance factor of R is -1 (or in case of deletion also 0), 
+					//a single left rotation (with P as the root) is needed (Right-Right case).
+					leftRotate(node);
+				}
+				else if (rightChildBalance == 1) {
+					//If the balance factor of R is +1, two different rotations are needed. 
+					//The first rotation is a right rotation with R as the root. 
+					//The second is a left rotation with P as the root (Right-Left case).
+					rightRotate(node.getRight());
+					leftRotate(node);
+				}
+			}
+			else if(balance == 2) {
+				//If the balance factor of P is 2, then the left subtree outweighs the right subtree of the given node, 
+				//and the balance factor of the left child (L) must be checked. 
+				//The right rotation with P as the root is necessary.
+				int leftChildBalance = node.getLeft().getBalanceFactor();
+				if (leftChildBalance == -1) {
+					//If the balance factor of L is -1, two different rotations are needed. 
+					//The first rotation is a left rotation with L as the root. 
+					//The second is a right rotation with P as the root (Left-Right case).
+					leftRotate(node.getLeft());
+					rightRotate(node);
+				}
+				else if (leftChildBalance == 1) {
+					//If the balance factor of L is +1 (or in case of deletion also 0), 
+					//a single right rotation (with P as the root) is needed (Left-Left case).
+					rightRotate(node);
+				}
+			}
 			balance(node.getParent());
 		}
 	}
+	
+	private void rightRotate(Node <T> root){
+		//left child = > root
+		//root = > right child
+		//left, left child = > left
+		if (root == this.head) {
+			this.head = root.getLeft();
+			this.head.setParent(null);
+			this.head.setRight(root);
+			root.setParent(this.head);
+			root.setLeft(null);
+			root.setRight(null);
+		}
+		else if (root.isLeftChild()) {
+			//Node <T> newRoot = root.getRight(); 
+			//right child -> root
+//			T rootVal = root.getValue();
+	//		T rightVal = root.getRight().getValue();
+		//	root.setValue(rightVal);
+			
+			//root.getParent().setLeft(newRoot);
+			//root -> left child
+			//newRoot.setLeft(root);
+		}
+		else {
+			
+		}
+	}
+	
+	private void leftRotate(Node <T> root){
+		//right child = > root
+		//root = > left child
+		//right, right child = > right
+		if (root == this.head) {
+			this.head = root.getRight();
+			this.head.setParent(null);
+			this.head.setLeft(root);
+			root.setParent(this.head);
+			root.setLeft(null);
+			root.setRight(null);
+		}
+		else if (root.isLeftChild()) {
+			//Node <T> newRoot = root.getRight(); 
+			//right child -> root
+//			T rootVal = root.getValue();
+	//		T rightVal = root.getRight().getValue();
+		//	root.setValue(rightVal);
+			
+			//root.getParent().setLeft(newRoot);
+			//root -> left child
+			//newRoot.setLeft(root);
+		}
+		else {
+			
+		}	
+	}
+
 	
 	/**
 	 * deletes a value from the tree
@@ -145,7 +200,7 @@ public class AVLTree <T extends Comparable<T>>{
 	}
 	
 	private void printHelper(Node<T> cur, int depth){
-		System.out.println("value: " + cur.getValue() + " depth: " + depth);
+		System.out.println("value: " + cur.getValue() +" balance: " + cur.getBalanceFactor()+" depth: " + depth);
 		if(cur.getLeft()!=null){
 			printHelper(cur.getLeft(), depth+1);
 		}

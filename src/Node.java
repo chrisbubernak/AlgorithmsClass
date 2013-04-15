@@ -10,10 +10,10 @@ public class Node <T extends Comparable<T>>{
 		int leftHeight = 0;
 		int rightHeight = 0;
 		if (this.left != null){
-			leftHeight = this.left.getHeight();
+			leftHeight = this.left.getHeight()+1;
 		}
 		if (this.right != null){
-			rightHeight = this.right.getHeight();
+			rightHeight = this.right.getHeight()+1;
 		}
 		return leftHeight - rightHeight;
 	}
@@ -65,5 +65,13 @@ public class Node <T extends Comparable<T>>{
 	
 	public void setValue(T value) {
 		this.value = value;
+	}
+	
+	public boolean isRightChild(){
+		return this == this.getParent().getRight();
+	}
+	
+	public boolean isLeftChild(){
+		return this == this.getParent().getLeft();
 	}
 }
