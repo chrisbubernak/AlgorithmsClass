@@ -78,8 +78,6 @@ public class AVLTree <T extends Comparable<T>>{
 		if(node != null){
 			int balance = node.getBalanceFactor();
 			if(balance == -2) {
-				System.out.println("fda");
-
 				//if the balance factor of P is -2 then the right subtree outweighs the left subtree of the given node, 
 				//and the balance factor of the right child (R) must be checked. 
 				//The left rotation with P as the root is necessary.
@@ -128,23 +126,21 @@ public class AVLTree <T extends Comparable<T>>{
 			this.head.setParent(null);
 			this.head.setRight(root);
 			root.setParent(this.head);
-			root.setLeft(null);
-			root.setRight(null);
 		}
 		else if (root.isLeftChild()) {
-			//Node <T> newRoot = root.getRight(); 
-			//right child -> root
-//			T rootVal = root.getValue();
-	//		T rightVal = root.getRight().getValue();
-		//	root.setValue(rightVal);
-			
-			//root.getParent().setLeft(newRoot);
-			//root -> left child
-			//newRoot.setLeft(root);
+			root.getParent().setLeft(root.getLeft());
+			root.getLeft().setParent(root.getParent());
+			root.getLeft().setRight(root);
+			root.setParent(root.getLeft());
 		}
 		else {
-			
+			root.getParent().setRight(root.getLeft());
+			root.getLeft().setParent(root.getParent());
+			root.getLeft().setRight(root);
+			root.setParent(root.getLeft());
 		}
+		root.setLeft(null);
+		root.setRight(null);
 	}
 	
 	private void leftRotate(Node <T> root){
@@ -156,23 +152,21 @@ public class AVLTree <T extends Comparable<T>>{
 			this.head.setParent(null);
 			this.head.setLeft(root);
 			root.setParent(this.head);
-			root.setLeft(null);
-			root.setRight(null);
 		}
-		else if (root.isLeftChild()) {
-			//Node <T> newRoot = root.getRight(); 
-			//right child -> root
-//			T rootVal = root.getValue();
-	//		T rightVal = root.getRight().getValue();
-		//	root.setValue(rightVal);
-			
-			//root.getParent().setLeft(newRoot);
-			//root -> left child
-			//newRoot.setLeft(root);
+		else if (root.isRightChild()) {
+			root.getParent().setRight(root.getRight());
+			root.getRight().setParent(root.getParent());
+			root.getRight().setLeft(root);
+			root.setParent(root.getRight());
 		}
 		else {
-			
-		}	
+			root.getParent().setLeft(root.getRight());
+			root.getRight().setParent(root.getParent());
+			root.getRight().setLeft(root);
+			root.setParent(root.getRight());
+		}
+		root.setLeft(null);
+		root.setRight(null);
 	}
 
 	
