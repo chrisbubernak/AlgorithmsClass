@@ -67,7 +67,7 @@ public class AVLTree <T extends Comparable<T>>{
 		}
 	}
 	
-	public void balance(Node<T> node){
+	private void balance(Node<T> node){
 		/*
 		 * The balance factor is calculated as follows: balanceFactor = height(left-subtree) - height(right-subtree). 
 		 * For each node checked, if the balance factor remains −1, 0, or +1 then no rotations are necessary. 
@@ -94,6 +94,12 @@ public class AVLTree <T extends Comparable<T>>{
 					rightRotate(node.getRight());
 					leftRotate(node);
 				}
+				else if (rightChildBalance == 0) {
+					//In addition to the balancing described above for insertions, 
+					//if the balance factor for the tree is 2 and that of the left subtree is 0, 
+					//a right rotation must be performed on P. The mirror of this case is also necessary.
+					rightRotate(node);
+				}
 			}
 			else if(balance == 2) {
 				//If the balance factor of P is 2, then the left subtree outweighs the right subtree of the given node, 
@@ -112,6 +118,13 @@ public class AVLTree <T extends Comparable<T>>{
 					//a single right rotation (with P as the root) is needed (Left-Left case).
 					rightRotate(node);
 				}
+				else if (leftChildBalance == 0) {
+					//In addition to the balancing described above for insertions, 
+					//if the balance factor for the tree is 2 and that of the left subtree is 0, 
+					//a right rotation must be performed on P. The mirror of this case is also necessary.
+					System.out.println("fda");
+					leftRotate(node.getLeft());
+				}
 			}
 			balance(node.getParent());
 		}
@@ -120,7 +133,10 @@ public class AVLTree <T extends Comparable<T>>{
 	private void rightRotate(Node <T> root){
 		//left child = > root
 		//root = > right child
-		//left, left child = > left
+		//left, left child = > left child
+		//left, right child => right, left child
+
+		
 		if (root == this.head) {
 			this.head = root.getLeft();
 			this.head.setParent(null);
@@ -139,14 +155,17 @@ public class AVLTree <T extends Comparable<T>>{
 			root.getLeft().setRight(root);
 			root.setParent(root.getLeft());
 		}
-		root.setLeft(null);
+
 		root.setRight(null);
+		root.setLeft(null);
 	}
 	
 	private void leftRotate(Node <T> root){
 		//right child = > root
 		//root = > left child
-		//right, right child = > right
+		//right, right child = > right child
+		//right, left child => left, right child
+		
 		if (root == this.head) {
 			this.head = root.getRight();
 			this.head.setParent(null);
@@ -176,11 +195,81 @@ public class AVLTree <T extends Comparable<T>>{
 	 * @param value to delete
 	 */
 	public void delete(T value) {
-	//If the node is a leaf or has only one child, remove it. 
-	//Otherwise, replace it with either the largest in its left sub tree (in order predecessor) 
-	//or the smallest in its right sub tree (in order successor), and remove that node. 
-	//The node that was found as a replacement has at most one sub tree. 
-	//After deletion, retrace the path back up the tree (parent of the replacement) to the root, adjusting the balance factors as needed.
+		if (this.head != null) {
+			deleteRecurse(value, head);
+		}
+		return;
+	}
+	
+	private void deleteRecurse(T value, Node<T> cur){
+		int c = value.compareTo(cur.getValue());
+		if (c == 0){
+			Node<T> parent = cur.getParent();
+
+			//If the node is a leaf or has only one child, remove it. 
+			if (cur.getLeft()== null && cur.getRight() == null) {
+				if(this.head == cur) {
+					this.head = null;
+				}
+				else if (cur.isLeftChild()) {
+					parent.setLeft(null);
+				}
+				else {
+					parent.setRight(null);
+				}
+			}
+			else if (cur.getLeft() == null){
+				if(this.head == cur) {
+					this.head = cur.getRight();
+				}
+				else if (cur.isLeftChild()) {
+					parent.setLeft(cur.getRight());
+				}
+				else {
+					parent.setRight(cur.getRight());
+				}
+			}
+			else if (cur.getRight() == null){
+				if(this.head == cur) {
+					this.head = cur.getLeft();
+				}
+				else if (cur.isLeftChild()) {
+					parent.setLeft(cur.getLeft());
+				}
+				else {
+					parent.setRight(cur.getLeft());
+				}
+			}
+			else {
+				//Otherwise, replace it with either the largest in its left sub tree (in order predecessor) 
+				//or the smallest in its right sub tree (in order successor), and remove that node. 
+				Node<T> temp = cur.getLeft();
+				while (temp.getRight()!=null) {
+					temp = temp.getRight();
+				}
+				//swap the value
+				System.out.println(temp.getValue());
+				cur.setValue(temp.getValue());
+				//delete the old node
+				temp.getParent().setRight(null);
+				
+				
+				//The node that was found as a replacement has at most one sub tree. 
+				//After deletion, retrace the path back up the tree (parent of the replacement) to the root, adjusting the balance factors as needed.
+			}
+			balance(cur);
+			return;
+		}
+		else if(c < 0) {
+			cur = cur.getLeft();
+		}
+		else {
+			cur = cur.getRight();
+		}
+		
+		if(cur != null){
+			deleteRecurse(value, cur);
+		}
 	}
 	
 	
