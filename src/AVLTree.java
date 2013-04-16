@@ -98,7 +98,7 @@ public class AVLTree <T extends Comparable<T>>{
 					//In addition to the balancing described above for insertions, 
 					//if the balance factor for the tree is 2 and that of the left subtree is 0, 
 					//a right rotation must be performed on P. The mirror of this case is also necessary.
-					rightRotate(node);
+					leftRotate(node);
 				}
 			}
 			else if(balance == 2) {
@@ -122,71 +122,87 @@ public class AVLTree <T extends Comparable<T>>{
 					//In addition to the balancing described above for insertions, 
 					//if the balance factor for the tree is 2 and that of the left subtree is 0, 
 					//a right rotation must be performed on P. The mirror of this case is also necessary.
-					System.out.println("fda");
-					leftRotate(node.getLeft());
+					rightRotate(node.getLeft());
 				}
 			}
 			balance(node.getParent());
 		}
 	}
 	
-	private void rightRotate(Node <T> root){
-		//left child = > root
-		//root = > right child
-		//left, left child = > left child
-		//left, right child => right, left child
-
+	private void rightRotate(Node <T> root) {
+		Node <T> parent = root.getParent();		
+		boolean isLeftChild = false;
 		
-		if (root == this.head) {
-			this.head = root.getLeft();
-			this.head.setParent(null);
-			this.head.setRight(root);
-			root.setParent(this.head);
+		if (parent!= null && root.isLeftChild()) {
+			isLeftChild = true;
 		}
-		else if (root.isLeftChild()) {
-			root.getParent().setLeft(root.getLeft());
-			root.getLeft().setParent(root.getParent());
-			root.getLeft().setRight(root);
-			root.setParent(root.getLeft());
+		
+		//Pivot = Root.OS
+		Node <T> pivot = root.getLeft();
+		
+		//Root.OS = Pivot.RS
+		root.setLeft(pivot.getRight());
+		if (pivot.getRight()!=null){
+			pivot.getRight().setParent(root); //then connect back pointer
+		}
+		
+		//Pivot.RS = Root
+		pivot.setRight(root);
+		root.setParent(pivot); //then connect back pointer
+		
+		//Root = Pivot
+		root = pivot;
+		root.setParent(parent);
+		
+		//if it is the root of the tree..
+		if (parent == null) {
+			this.head = root; 
+		}
+		else if (isLeftChild){
+			parent.setLeft(root);
 		}
 		else {
-			root.getParent().setRight(root.getLeft());
-			root.getLeft().setParent(root.getParent());
-			root.getLeft().setRight(root);
-			root.setParent(root.getLeft());
+			parent.setRight(root);
 		}
-
-		root.setRight(null);
-		root.setLeft(null);
 	}
 	
-	private void leftRotate(Node <T> root){
-		//right child = > root
-		//root = > left child
-		//right, right child = > right child
-		//right, left child => left, right child
+	private void leftRotate(Node <T> root) {
+		Node <T> parent = root.getParent();		
+		boolean isLeftChild = false;
 		
-		if (root == this.head) {
-			this.head = root.getRight();
-			this.head.setParent(null);
-			this.head.setLeft(root);
-			root.setParent(this.head);
+		if (parent!= null && root.isLeftChild()) {
+			isLeftChild = true;
 		}
-		else if (root.isRightChild()) {
-			root.getParent().setRight(root.getRight());
-			root.getRight().setParent(root.getParent());
-			root.getRight().setLeft(root);
-			root.setParent(root.getRight());
+		
+		//Pivot = Root.OS
+		Node <T> pivot = root.getRight();
+		
+		//Root.OS = Pivot.RS
+		root.setRight(pivot.getLeft());
+		if (pivot.getLeft()!=null){
+			pivot.getLeft().setParent(root); //then connect back pointer
+		}
+		
+		//Pivot.RS = Root
+		pivot.setLeft(root);
+		root.setParent(pivot); //then connect back pointer
+		
+		//Root = Pivot
+		root = pivot;
+		root.setParent(parent);
+		
+		//if it is the root of the tree..
+		if (parent == null) {
+			this.head = root; 
+		}
+		else if (isLeftChild){
+			parent.setLeft(root);
 		}
 		else {
-			root.getParent().setLeft(root.getRight());
-			root.getRight().setParent(root.getParent());
-			root.getRight().setLeft(root);
-			root.setParent(root.getRight());
+			parent.setRight(root);
 		}
-		root.setLeft(null);
-		root.setRight(null);
 	}
+	
 
 	
 	/**
@@ -256,6 +272,7 @@ public class AVLTree <T extends Comparable<T>>{
 				
 				//The node that was found as a replacement has at most one sub tree. 
 				//After deletion, retrace the path back up the tree (parent of the replacement) to the root, adjusting the balance factors as needed.
+				cur = temp.getParent();
 			}
 			balance(cur);
 			return;

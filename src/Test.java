@@ -19,6 +19,7 @@ public class Test {
 		a.insert(8);
 		a.delete(17);
 		a.delete(14);
+		a.delete(13);
 		a.print();
 	}
 
