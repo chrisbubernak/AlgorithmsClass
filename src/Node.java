@@ -4,7 +4,8 @@ public class Node <T extends Comparable<T>>{
 	private Node <T> parent;
 	private Node <T> left;
 	private Node <T> right;
-
+	public int leftHeight = 0;
+	public int rightHeight = 0;
 	
 	public int getBalanceFactor(){
 		int leftHeight = 0;
@@ -20,14 +21,14 @@ public class Node <T extends Comparable<T>>{
 	
 	
 	public int getHeight(){
-		int leftHeight = 0;
+		/*int leftHeight = 0;
 	    int rightHeight = 0;
 	    if (this.left != null){
 	    	leftHeight = this.left.getHeight()+1;
 	    }
 	    if (this.right != null){
 	    	rightHeight = this.right.getHeight()+1;
-	    }
+	    }*/
 		return Math.max(rightHeight, leftHeight);
 	}
 	
@@ -57,10 +58,25 @@ public class Node <T extends Comparable<T>>{
 	
 	public void setLeft(Node <T> left){
 		this.left = left;
+		
+		//is this right?
+		if (left == null) {
+			this.leftHeight = 0;
+		}
+		else {
+			this.leftHeight = Math.max(left.leftHeight, left.rightHeight) +1;
+		}
 	}
 	
 	public void setRight(Node <T> right) {
 		this.right = right;
+		
+		if (right == null) {
+			this.leftHeight = 0;
+		}
+		else {
+			this.rightHeight = Math.max(right.leftHeight, right.rightHeight) +1;
+		}
 	}
 	
 	public void setValue(T value) {
