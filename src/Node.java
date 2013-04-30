@@ -29,6 +29,7 @@ public class Node <T extends Comparable<T>>{
 	    if (this.right != null){
 	    	rightHeight = this.right.getHeight()+1;
 	    }*/
+		//System.out.println(rightHeight + " " + leftHeight + " " + this.rightHeight + " " + this.leftHeight);
 		return Math.max(rightHeight, leftHeight);
 	}
 	
@@ -72,7 +73,7 @@ public class Node <T extends Comparable<T>>{
 		this.right = right;
 		
 		if (right == null) {
-			this.leftHeight = 0;
+			this.rightHeight = 0;
 		}
 		else {
 			this.rightHeight = Math.max(right.leftHeight, right.rightHeight) +1;

@@ -1,6 +1,7 @@
 
 public class AVLTree <T extends Comparable<T>>{
 	private Node<T> head;
+	public static int opCount;
 	
 	
 	/**
@@ -10,8 +11,10 @@ public class AVLTree <T extends Comparable<T>>{
 	 * @return boolean indicating whether the target was found
 	 */
 	public boolean search(T target) {
+		opCount++;
 		Node<T> cur = head;
 		while (cur != null){
+			opCount+=4;
 			int c = target.compareTo(cur.getValue());
 			if (c == 0){
 				return true;
@@ -33,12 +36,14 @@ public class AVLTree <T extends Comparable<T>>{
 	 */
 	public void insert(T value){
 		if (this.head == null) {
+			opCount++;
 			this.head = new Node<T>(value);
 		}		
 		insertRecurse(value, head);
 	}
 	
 	private void insertRecurse(T value, Node<T> cur){
+		opCount+=7;
 		int c = value.compareTo(cur.getValue());
 		if (c == 0) {
 			return;
@@ -76,6 +81,7 @@ public class AVLTree <T extends Comparable<T>>{
 		 * to restore the entire tree to the rules of AVL.
 		 */
 		if(node != null){
+			opCount+=6;
 			int balance = node.getBalanceFactor();
 			if(balance == -2) {
 				//if the balance factor of P is -2 then the right subtree outweighs the left subtree of the given node, 
@@ -130,6 +136,7 @@ public class AVLTree <T extends Comparable<T>>{
 	}
 	
 	private void rightRotate(Node <T> root) {
+		opCount+=15;
 		Node <T> parent = root.getParent();		
 		boolean isLeftChild = false;
 		
@@ -167,6 +174,7 @@ public class AVLTree <T extends Comparable<T>>{
 	}
 	
 	private void leftRotate(Node <T> root) {
+		opCount+=15;
 		Node <T> parent = root.getParent();		
 		boolean isLeftChild = false;
 		
@@ -211,6 +219,7 @@ public class AVLTree <T extends Comparable<T>>{
 	 * @param value to delete
 	 */
 	public void delete(T value) {
+		opCount++;
 		if (this.head != null) {
 			deleteRecurse(value, head);
 		}
@@ -218,6 +227,7 @@ public class AVLTree <T extends Comparable<T>>{
 	}
 	
 	private void deleteRecurse(T value, Node<T> cur){
+		opCount+=7;
 		int c = value.compareTo(cur.getValue());
 		if (c == 0){
 			Node<T> parent = cur.getParent();
@@ -261,6 +271,7 @@ public class AVLTree <T extends Comparable<T>>{
 				//or the smallest in its right sub tree (in order successor), and remove that node. 
 				Node<T> temp = cur.getLeft();
 				while (temp.getRight()!=null) {
+					opCount++;
 					temp = temp.getRight();
 				}
 				//swap the value
