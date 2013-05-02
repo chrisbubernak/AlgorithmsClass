@@ -90,22 +90,16 @@ public class AVLTree <T extends Comparable<T>>{
 				//and the balance factor of the right child (R) must be checked. 
 				//The left rotation with P as the root is necessary.
 				int rightChildBalance = node.getRight().getBalanceFactor();
-				if (rightChildBalance == -1) {
-					//If the balance factor of R is -1 (or in case of deletion also 0), 
-					//a single left rotation (with P as the root) is needed (Right-Right case).
-					leftRotate(node);
-				}
-				else if (rightChildBalance == 1) {
+				if (rightChildBalance == 1) {
 					//If the balance factor of R is +1, two different rotations are needed. 
 					//The first rotation is a right rotation with R as the root. 
 					//The second is a left rotation with P as the root (Right-Left case).
 					rightRotate(node.getRight());
 					leftRotate(node);
 				}
-				else if (rightChildBalance == 0) {
-					//In addition to the balancing described above for insertions, 
-					//if the balance factor for the tree is 2 and that of the left subtree is 0, 
-					//a right rotation must be performed on P. The mirror of this case is also necessary.
+				else {
+					//If the balance factor of R is -1 (or in case of deletion also 0), 
+					//a single left rotation (with P as the root) is needed (Right-Right case).
 					leftRotate(node);
 				}
 			}
@@ -121,16 +115,10 @@ public class AVLTree <T extends Comparable<T>>{
 					leftRotate(node.getLeft());
 					rightRotate(node);
 				}
-				else if (leftChildBalance == 1) {
+				else {
 					//If the balance factor of L is +1 (or in case of deletion also 0), 
 					//a single right rotation (with P as the root) is needed (Left-Left case).
 					rightRotate(node);
-				}
-				else if (leftChildBalance == 0) {
-					//In addition to the balancing described above for insertions, 
-					//if the balance factor for the tree is 2 and that of the left subtree is 0, 
-					//a right rotation must be performed on P. The mirror of this case is also necessary.
-					rightRotate(node.getLeft());
 				}
 			}
 			balance(node.getParent());
@@ -290,14 +278,10 @@ public class AVLTree <T extends Comparable<T>>{
 			return;
 		}
 		else if(c < 0) {
-			cur = cur.getLeft();
+			deleteRecurse(value, cur.getLeft());
 		}
 		else {
-			cur = cur.getRight();
-		}
-		
-		if(cur != null){
-			deleteRecurse(value, cur);
+			deleteRecurse(value, cur.getRight());
 		}
 	}
 	
