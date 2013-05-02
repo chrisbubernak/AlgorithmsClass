@@ -11,22 +11,24 @@ public class AVLTree <T extends Comparable<T>>{
 	 * @return boolean indicating whether the target was found
 	 */
 	public boolean search(T target) {
-		opCount++;
-		Node<T> cur = head;
-		while (cur != null){
-			opCount+=4;
-			int c = target.compareTo(cur.getValue());
-			if (c == 0){
-				return true;
-			}
-			else if(c < 0) {
-				cur = cur.getLeft();
-			}
-			else {
-				cur = cur.getRight();
-			}
+		return searchRecurse(target, this.head);
+	}
+	
+	private boolean searchRecurse(T target, Node<T> cur) {
+		if (cur == null) {
+			return false;
 		}
-		return false;
+		opCount+=3;
+		int c = target.compareTo(cur.getValue());
+		if (c == 0) {
+			return true;
+		}
+		else if (c < 0) {
+			return searchRecurse(target, cur.getLeft());
+		}
+		else {
+			return searchRecurse(target, cur.getRight());
+		}
 	}
 	
 	/**
@@ -275,7 +277,6 @@ public class AVLTree <T extends Comparable<T>>{
 					temp = temp.getRight();
 				}
 				//swap the value
-				System.out.println(temp.getValue());
 				cur.setValue(temp.getValue());
 				//delete the old node
 				temp.getParent().setRight(null);

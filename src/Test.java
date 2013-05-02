@@ -3,18 +3,38 @@ import java.util.Random;
 public class Test {
 
 	static Random rand = new Random();
+	static int targetValue; 
 	
 	public static void main(String[] args) {
-		test(100, 10);
-		test(100, 50);
-		test(100, 100);
-		test(100, 500);
-		test(100, 1000);
-		test(100, 5000);
-		test(100, 10000);
-		test(100, 50000);
+		/*insertTest(100, 10);
+		insertTest(100, 50);
+		insertTest(100, 100);
+		insertTest(100, 500);
+		insertTest(100, 1000);
+		insertTest(100, 5000);
+		insertTest(100, 10000);
+		insertTest(100, 50000);
+		
+		searchTest(100, 10);
+		searchTest(100, 50);
+		searchTest(100, 100);
+		searchTest(100, 500);
+		searchTest(100, 1000);
+		searchTest(100, 5000);
+		searchTest(100, 10000);
+		searchTest(100, 50000);
+		
+		deleteTest(100, 10);
+		deleteTest(100, 50);
+		deleteTest(100, 100);
+		deleteTest(100, 500);
+		deleteTest(100, 1000);
+		deleteTest(100, 5000);
+		deleteTest(100, 10000);
+		deleteTest(100, 50000);*/
+		
 		AVLTree<Integer>a = new AVLTree<Integer>();
-		/*a.insert(10);
+		a.insert(10);
 		a.print();
 
 		a.insert(13);
@@ -32,10 +52,10 @@ public class Test {
 		a.delete(17);
 		a.delete(14);
 		a.delete(13);
-		a.print();*/
+		a.print();
 	}
 	
-	public static void test(int trials, int n) {
+	public static void insertTest(int trials, int n) {
 		int count = 0;
 		//insert tests
 		for (int i = 0; i<trials; i++) {
@@ -46,24 +66,43 @@ public class Test {
 		}
 		
 		System.out.println("Insert Test n=" + n + " count=" + count/trials);
+
+	}
+	
+	public static void deleteTest(int trials, int n) {
+		int count = 0;
 		
-		//delete tests
 		for (int i = 0; i<trials; i++) {
 			AVLTree<Integer> a = createTree(n);
-
+			AVLTree.opCount = 0;
+			a.delete(targetValue);
+			count += AVLTree.opCount;
 		}
 		
+		System.out.println("Delete Test n=" + n + " count=" + count/trials);
+	}
+	
+	public static void searchTest(int trials, int n) {
+		int count = 0;
 		//search tests
 		for (int i = 0; i<trials; i++) {
 			AVLTree<Integer> a = createTree(n);
-
+			AVLTree.opCount = 0;
+			a.search(targetValue);
+			count += AVLTree.opCount;
 		}
+		
+		System.out.println("Search Test n=" + n + " count=" + count/trials);
 	}
 	
 	public static AVLTree <Integer> createTree(int n) {
 		AVLTree<Integer> a = new AVLTree<Integer>();
 		for (int i = 0; i<n; i++) {
-			a.insert(rand.nextInt(Integer.MAX_VALUE));
+			int val = rand.nextInt(Integer.MAX_VALUE);
+			if (i == 0) {
+				targetValue = val;
+			}
+			a.insert(val);
 		}
 		return a;
 	}
