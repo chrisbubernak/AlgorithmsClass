@@ -275,7 +275,6 @@ public class AVLTree <T extends Comparable<T>>{
 				cur = temp.getParent();
 			}
 			balance(cur);
-			return;
 		}
 		else if(c < 0) {
 			deleteRecurse(value, cur.getLeft());

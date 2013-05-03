@@ -6,7 +6,7 @@ public class Test {
 	static int targetValue; 
 	
 	public static void main(String[] args) {
-		/*insertTest(100, 10);
+		insertTest(100, 10);
 		insertTest(100, 50);
 		insertTest(100, 100);
 		insertTest(100, 500);
@@ -31,7 +31,7 @@ public class Test {
 		deleteTest(100, 1000);
 		deleteTest(100, 5000);
 		deleteTest(100, 10000);
-		deleteTest(100, 50000);*/
+		deleteTest(100, 50000);
 		
 		AVLTree<Integer>a = new AVLTree<Integer>();
 		a.insert(10);

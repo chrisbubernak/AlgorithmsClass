@@ -23,15 +23,6 @@ public class Node <T extends Comparable<T>>{
 	
 	public int getHeight(){
 		AVLTree.opCount++;
-		/*int leftHeight = 0;
-	    int rightHeight = 0;
-	    if (this.left != null){
-	    	leftHeight = this.left.getHeight()+1;
-	    }
-	    if (this.right != null){
-	    	rightHeight = this.right.getHeight()+1;
-	    }*/
-		//System.out.println(rightHeight + " " + leftHeight + " " + this.rightHeight + " " + this.leftHeight);
 		return Math.max(rightHeight, leftHeight);
 	}
 	
