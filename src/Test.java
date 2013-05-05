@@ -2,6 +2,7 @@
 public class Test {
 	public static void main(String[] args) {		
 		AVLTree<Integer>a = new AVLTree<Integer>();
+		System.out.println("Integer Test: \n");
 		a.insert(10);
 		a.insert(13);
 		a.insert(14);
@@ -24,6 +25,15 @@ public class Test {
 		a.delete(10);
 		a.print();
 		
+		System.out.println("\nString Test: \n");
+		
+		AVLTree<String> b = new AVLTree<String>();
+		b.insert("lol");
+		b.insert("hey");
+		b.insert("test");
+		b.insert("cool");
+		b.insert("avl");
+		b.print();
 	}
 	
 

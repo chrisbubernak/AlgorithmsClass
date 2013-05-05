@@ -307,7 +307,7 @@ public class AVLTree <T extends Comparable<T>>{
 				oldTabs = 0;
 			}
 			for (int i = 0; i<tabs-oldTabs; i++) {
-				System.out.print("    ");
+				System.out.print("\t");
 			}
 			System.out.print(p.node.getValue());
 			if (p.node.getLeft()!=null) {
