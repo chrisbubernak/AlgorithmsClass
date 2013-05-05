@@ -4,8 +4,8 @@ public class Node <T extends Comparable<T>>{
 	private Node <T> parent;
 	private Node <T> left;
 	private Node <T> right;
-	public int leftHeight = 0;
-	public int rightHeight = 0;
+	private int leftHeight = 0;
+	private int rightHeight = 0;
 	
 	public int getBalanceFactor(){
 		int leftHeight = 0;
@@ -19,6 +19,13 @@ public class Node <T extends Comparable<T>>{
 		return leftHeight - rightHeight;
 	}
 	
+	public int getLeftHeight() {
+		return this.leftHeight;
+	}
+	
+	public int getRightHeight() {
+		return this.rightHeight;
+	}
 	
 	public int getHeight(){
 		return Math.max(rightHeight, leftHeight);

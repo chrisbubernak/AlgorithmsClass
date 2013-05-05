@@ -1,6 +1,7 @@
 
 public class AVLTree <T extends Comparable<T>>{
 	private Node<T> head;
+	private int count;
 	
 	/**
 	 * searches the tree for a value 
@@ -36,6 +37,7 @@ public class AVLTree <T extends Comparable<T>>{
 	public void insert(T value){
 		if (this.head == null) {
 			this.head = new Node<T>(value);
+			count++;
 		}		
 		insertRecurse(value, head);
 	}
@@ -51,6 +53,8 @@ public class AVLTree <T extends Comparable<T>>{
 				newNode.setParent(cur);
 				cur.setLeft(newNode);
 				balance(cur);
+				count++;
+
 			}
 			else {
 				insertRecurse(value, cur.getLeft());
@@ -62,6 +66,7 @@ public class AVLTree <T extends Comparable<T>>{
 				newNode.setParent(cur);
 				cur.setRight(newNode);
 				balance(cur);
+				count++;
 			}
 			else {
 				insertRecurse(value, cur.getRight());
@@ -263,6 +268,7 @@ public class AVLTree <T extends Comparable<T>>{
 				//After deletion, retrace the path back up the tree (parent of the replacement) to the root, adjusting the balance factors as needed.
 				cur = temp.getParent();
 			}
+			count--;
 			balance(cur);
 		}
 		else if(c < 0) {
@@ -277,18 +283,90 @@ public class AVLTree <T extends Comparable<T>>{
 	/**
 	 * prints the tree out
 	 * takes O(n)
-	 */
-	public void print() {
-		printHelper(this.head, 0);
+	 */	
+	public void print(){
+		PrintQueue pq = new PrintQueue();
+		int curDepth = 0;
+		int oldDepth = 0;
+		
+		int height = Math.max(this.head.getLeftHeight(), this.head.getRightHeight())+1;
+		int tabs = 0;
+		for (int i = height-1; i > 0; i--) {
+			tabs+=i;
+		}
+		int oldTabs = 0;
+		pq.enqueue(this.head, curDepth, tabs);
+		PrintNode p = pq.dequeue();
+		while (p != null) {
+			curDepth = p.depth;
+			tabs = p.tabs;
+			
+			if (oldDepth != curDepth) {
+				System.out.print("\n");
+				oldDepth = curDepth;
+				oldTabs = 0;
+			}
+			for (int i = 0; i<tabs-oldTabs; i++) {
+				System.out.print("    ");
+			}
+			System.out.print(p.node.getValue());
+			if (p.node.getLeft()!=null) {
+				pq.enqueue(p.node.getLeft(), curDepth+1, tabs-(height-curDepth-1));
+			}
+			if (p.node.getRight()!=null) {
+				pq.enqueue(p.node.getRight(), curDepth+1, tabs+(height-curDepth-1));
+			}
+			p = pq.dequeue();
+			oldTabs = tabs;
+		}
 	}
 	
-	private void printHelper(Node<T> cur, int depth){
-		System.out.println("value: " + cur.getValue() +" balance: " + cur.getBalanceFactor()+" depth: " + depth);
-		if(cur.getLeft()!=null){
-			printHelper(cur.getLeft(), depth+1);
+	private class PrintNode {
+		private Node<T> node;
+		private PrintNode next;
+		private int depth;
+		private int tabs;
+		
+		PrintNode(Node<T> node, int depth, int tabs) {
+			this.node = node;
+			this.depth = depth;
+			this.tabs = tabs;
 		}
-		if(cur.getRight()!=null){
-			printHelper(cur.getRight(), depth+1);
+		
+	}
+	
+	private class PrintQueue {
+		PrintNode head;
+		PrintNode tail;
+		
+		public void enqueue(Node<T> node, int depth, int tabs) {
+			PrintNode p = new PrintNode(node, depth, tabs);
+			if (this.head == null) {
+				this.head = p;
+				this.tail = p;
+			}
+			
+			else {
+				this.tail.next = p;
+				this.tail = p;
+			}
+		}
+		
+		public PrintNode dequeue() {
+			if (this.head == null) {
+				return null;
+			}
+			else {
+				PrintNode temp = head;
+				if (head != tail) {
+					head = temp.next;
+				}
+				else {
+					head = null;
+					tail = null;
+				}
+				return temp;
+			}
 		}
 	}
 }

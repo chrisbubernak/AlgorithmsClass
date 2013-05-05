@@ -16,7 +16,14 @@ public class Test {
 		a.delete(17);
 		a.delete(14);
 		a.delete(13);
+		a.insert(24);
+		a.insert(23);
+		a.insert(1);
+		a.insert(2);
+		a.insert(3);
+		a.delete(10);
 		a.print();
+		
 	}
 	
 
